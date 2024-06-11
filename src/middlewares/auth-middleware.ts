@@ -16,6 +16,8 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
     return res.status(401).json({ message: 'Invalid or expired token' });
   }
 
+  // As I understood payload is just decoded jwt token so you can do like this: decoded.id
+
   (req as any).user = payload;
   next();
 };

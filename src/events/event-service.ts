@@ -18,10 +18,10 @@ class EventService {
         return newEvent;
     }
 
-    // async getEventsByCity(city: string): Promise<IEvent[]> {
-    //     const events = await EventModel.find({city});
-    //     return events;
-    // }
+    async getEventsByCity(city: string): Promise<IEvent[]> {
+        const events = await EventModel.find({location: city});
+        return events;
+    }
 
     async getEvents(): Promise<IEvent[]> {
         const allEvents = await EventModel.find();
