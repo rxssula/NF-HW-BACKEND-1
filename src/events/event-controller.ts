@@ -25,12 +25,17 @@ class EventController {
     getEvents  = async (req:Request, res:Response) =>{
         try{
             const user = await UserModel.findById((req.user as any).id)
+            const {page = 1, limit = 10} = req.query;
+
+            const pageNumber = parseInt(page as string);
+            const limitNumber = parseInt(limit as string);
+
             let events;
 
             if (user) {
-                events = await this.eventService.getEventsByCity(user.city);
+                events = await this.eventService.getEventsByCity(user.city, pageNumber, limitNumber);
             } else {
-                events = await this.eventService.getEvents();
+                events = await this.eventService.getEvents(pageNumber, limitNumber);
             }
 
 

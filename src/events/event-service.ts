@@ -18,14 +18,16 @@ class EventService {
         return newEvent;
     }
 
-    async getEventsByCity(city: string): Promise<IEvent[]> {
-        const events = await EventModel.find({location: city});
-        return events;
+    async getEventsByCity(city: string, page: number, limit: number) {
+        const events = await EventModel.find({location: city}).skip((page - 1) * limit).limit(limit);
+        const totalEvents = await EventModel.countDocuments();
+        return {events, totalEvents, totalPages: Math.ceil(totalEvents / limit), currentPage: page}
     }
 
-    async getEvents(): Promise<IEvent[]> {
-        const allEvents = await EventModel.find();
-        return allEvents;
+    async getEvents(page: number, limit: number) {
+        const events = await EventModel.find().skip((page - 1) * limit).limit(limit);
+        const totalEvents = await EventModel.countDocuments();
+        return {events, totalEvents, totalPages: Math.ceil(totalEvents / limit), currentPage: page};
     }
 
     async getEventById(id: string): Promise<IEvent | null> {
